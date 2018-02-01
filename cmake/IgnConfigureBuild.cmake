@@ -162,7 +162,6 @@ macro(ign_set_cxx_feature_flags)
     cxx_sizeof_member
     cxx_static_assert
     cxx_strong_enums
-    cxx_thread_local
     cxx_trailing_return_types
     cxx_unicode_literals
     cxx_unrestricted_unions

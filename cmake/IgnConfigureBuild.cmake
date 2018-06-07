@@ -242,8 +242,8 @@ macro(ign_set_cxx_feature_flags)
   set(IGN_KNOWN_CXX_STANDARDS 11 14 17)
 
   set(IGN_CXX_11_FEATURES cxx_std_11)
-  set(IGN_CXX_14_FEATURES cxx_std_14)
-  set(IGN_CXX_17_FEATURES cxx_std_17)
+  set(IGN_CXX_14_FEATURES cxx_std_11 cxx_std_14)
+  set(IGN_CXX_17_FEATURES cxx_std_11 cxx_std_14 cxx_std_17)
 
 endmacro()
 

@@ -16,7 +16,7 @@
 ########################################
 # Find libdl
 
-if(MSVC)
+if(WIN32)
   # The dlfcn-win32 library installs a config module, so we should leverage that
   find_package(dlfcn-win32)
 

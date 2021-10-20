@@ -29,7 +29,7 @@ include(FindPackageHandleStandardArgs)
 
 find_path(IgnMuJoCo_INCLUDE_DIRS mujoco.h)
 mark_as_advanced(IgnMuJoCo_INCLUDE_DIRS)
-find_library(IgnMuJoCo_LIBRARY mujoco210 libmujoco210 PATH_SUFFIXES bin)
+find_library(IgnMuJoCo_LIBRARY mujoco210nogl libmujoco210nogl PATH_SUFFIXES bin)
 mark_as_advanced(IgnMuJoCo_LIBRARY)
 
 find_package_handle_standard_args(IgnMuJoCo DEFAULT_MSG IgnMuJoCo_INCLUDE_DIRS IgnMuJoCo_LIBRARY)

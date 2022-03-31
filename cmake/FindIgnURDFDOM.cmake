@@ -35,6 +35,10 @@ if(NOT IgnURDFDOM_FOUND)
     set(find_version "")
   endif()
 
+  # Workaround for CMake bug https://gitlab.kitware.com/cmake/cmake/issues/17135,
+  # that prevents to successfully run a find_package(<package>) call if before there
+  # was a failed call to pkg_check_modules(<package> <pkg_config_module>)
+  unset(urdfdom_FOUND CACHE)
   # NOTE: urdfdom cmake does not support version checking
   ign_find_package(urdfdom ${find_version} QUIET)
   if (urdfdom_FOUND)

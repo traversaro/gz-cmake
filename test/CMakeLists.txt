@@ -8,4 +8,5 @@ if (UNIX)
   )
 endif()
 
+add_subdirectory(get_install_prefix)
 add_subdirectory(warning)

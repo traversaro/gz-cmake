@@ -26,7 +26,6 @@
 # to be set before calling find_package:
 #
 #  GZ_OGRE2_PROJECT_NAME    Possible values: OGRE2 (default) or OGRE-Next
-#                            (Only on UNIX, not in use for Windows)
 #                            Specify the project name used in the packaging.
 #                            It will impact directly in the name of the
 #                            CMake/pkg-config modules being used.
@@ -43,8 +42,6 @@
 #  OGRE2_RESOURCE_PATH      Path to ogre plugins directory
 #  GzOGRE2::GzOGRE2       Imported target for OGRE2
 #
-# On Windows, we assume that all the OGRE* defines are passed in manually
-# to CMake.
 #
 # Supports finding the following OGRE2 components: HlmsPbs, HlmsUnlit, Overlay,
 #  PlanarReflections
@@ -147,7 +144,8 @@ macro(get_preprocessor_entry CONTENTS KEYWORD VARIABLE)
   endif ()
 endmacro()
 
-if (NOT WIN32)
+find_package(PkgConfig QUIET)
+if (PkgConfig_FOUND)
   set(PKG_CONFIG_PATH_ORIGINAL $ENV{PKG_CONFIG_PATH})
   foreach (GZ_OGRE2_PROJECT_NAME "OGRE2" "OGRE-Next")
     message(STATUS "Looking for OGRE using the name: ${GZ_OGRE2_PROJECT_NAME}")
@@ -246,19 +244,7 @@ if (NOT WIN32)
     # reset pkg config path
     set(ENV{PKG_CONFIG_PATH} ${PKG_CONFIG_PATH_ORIGINAL})
 
-    set(OGRE2_INCLUDE_DIRS ${${GZ_OGRE2_PROJECT_NAME}_INCLUDE_DIRS})  # sync possible OGRE-Next to OGRE2
-
-    # verify ogre header can be found in the include path
-    find_path(OGRE2_INCLUDE
-      NAMES Ogre.h
-      PATHS ${OGRE2_INCLUDE_DIRS}
-      NO_DEFAULT_PATH
-    )
-
-    if(NOT OGRE2_INCLUDE)
-      set(OGRE2_FOUND false)
-      continue()
-    endif()
+    set(OGRE2_INCLUDE_DIRS ${${GZ_OGRE2_PROJECT_NAME}_INCLUDE_DIRS})  # sync possible OGRE-Next to OGRE
 
     # manually search and append the the RenderSystem/GL3Plus path to
     # OGRE2_INCLUDE_DIRS so OGRE GL headers can be found
@@ -266,6 +252,7 @@ if (NOT WIN32)
       get_filename_component(dir_name "${dir}" NAME)
       if ("${dir_name}" STREQUAL ${GZ_PKG_NAME})
         set(dir_include "${dir}/RenderSystems/GL3Plus")
+        set(OGRE2_INCLUDE "${dir}")
       else()
         set(dir_include "${dir}")
       endif()
@@ -393,7 +380,7 @@ if (NOT WIN32)
   # because gz_pkg_check_modules does not work for it.
   include(GzPkgConfig)
   gz_pkg_config_library_entry(GzOGRE2 OgreMain)
-else() #WIN32
+else() #PkgConfig_FOUND
 
   set(OGRE2_FOUND TRUE)
   set(OGRE_LIBRARIES "")
